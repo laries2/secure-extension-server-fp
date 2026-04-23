@@ -46,7 +46,15 @@ app.get("/script", (req, res) => {
 
     console.log("Key:", key, "| FP:", fp);
 
-    // ❌ Invalid / revoked / expired → SHOW modal
+    // 🚫 Reject missing fingerprint
+    if (!fp) {
+        return res.json({
+            allowed: false,
+            config: { blockModal: false }
+        });
+    }
+
+    // ❌ Invalid / revoked
     if (!user || !user.active) {
         return res.json({
             allowed: false,
@@ -57,6 +65,7 @@ app.get("/script", (req, res) => {
     const now = new Date();
     const expiry = new Date(user.expires);
 
+    // ❌ Expired
     if (now > expiry) {
         return res.json({
             allowed: false,
@@ -64,18 +73,24 @@ app.get("/script", (req, res) => {
         });
     }
 
-    // 🔐 Fingerprint binding
+    // 🔐 STRICT ONE DEVICE LOCK
     if (!user.fingerprint) {
+        // ✅ First device registers
         user.fingerprint = fp;
         saveKeys(keys);
+        console.log("🔒 Device registered:", fp);
+
     } else if (user.fingerprint !== fp) {
+        // 🚫 Different device → BLOCK
+        console.log("🚫 Fingerprint mismatch → access denied");
+
         return res.json({
             allowed: false,
             config: { blockModal: false }
         });
     }
 
-    // ✅ Active user → HIDE modal
+    // ✅ Allowed (same device only)
     return res.json({
         allowed: true,
         config: { blockModal: true }
