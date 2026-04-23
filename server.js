@@ -165,6 +165,6 @@ app.get("/unrevoke-key", (req, res) => {
     res.send("Key restored");
 });
 
-app.listen(3000, () => {
+app.listen(14000, () => {
     console.log("Server running on https://secure-extension-server-fp.onrender.com");
 });
