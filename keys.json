@@ -1,12 +1,12 @@
 {
-  "user_q9hl5bsb": {
-    "expires": "2026-05-08",
-    "active": true,
-    "devices": []
+  "user_j7dn4w9v": {
+    "expires": "2026-05-23",
+    "active": false,
+    "fingerprint": "fp_2047116760"
   },
-  "user_8xx4ersj": {
-    "expires": "2026-05-08",
+  "user_pj7wx0n5": {
+    "expires": "2026-05-23",
     "active": true,
-    "devices": []
+    "fingerprint": null
   }
 }
